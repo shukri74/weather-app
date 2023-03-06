@@ -77,8 +77,8 @@ function ShowWeatherForecast(city){
             method: "GET"
         }).then(function (result) {
             console.log(result)
-            var todayDiv = $("<div>").addClass("card p-3")
-            var todayDivBody = $("<div>").addClass("card-body")
+            today.empty();
+            var todayDiv = $("<div>").addClass("p-3")
             //console.log(result[0].dt_txt)
             var todaydate = moment(result.list[0].dt_txt).format("DD/MM/YYYY")
             var name = $("<h3>").addClass("card-title").text(result.city.name + " (" + todaydate + ")")
@@ -87,8 +87,27 @@ function ShowWeatherForecast(city){
             var temperature = $("<p>").text("Temperature: " + Math.round((result.list[0].main.temp-273)* 10)/ 10 +"°C")
             var wind = $("<p>").text("Wind: " + result.list[0].wind.speed + " KPH")
             var humidity = $("<p>").text("Humidity: " + result.list[0].main.humidity + "%")
-            todayDiv.append( todayDivBody, name, temperature, wind, humidity);
+            todayDiv.append(name, temperature, wind, humidity);
             today.append(todayDiv);
+
+            forecast.empty();
+
+            for (let i = 0; i < 40; i++){
+
+                i += 6;
+                
+                var forecastDiv = $("<div>").addClass("bg-primary m-2 forecastdiv")
+                var date = moment(result.list[i].dt_txt).format("DD/MM/YYYY")
+                var weathericon = $("<img>").attr("src", "http://openweathermap.org/img/w/" + result.list[i].weather[0].icon + ".png")
+                var temperature = $("<p>").text("Temperature: " + Math.round((result.list[i].main.temp-273)* 10)/ 10 +"°C")
+                var wind = $("<p>").text("Wind: " + result.list[i].wind.speed + " KPH")
+                var humidity = $("<p>").text("Humidity: " + result.list[i].main.humidity + "%")
+
+                forecastDiv.append(date, weathericon, temperature, wind, humidity)
+
+                forecast.append(forecastDiv)
+            }
+
         })
     })
 
