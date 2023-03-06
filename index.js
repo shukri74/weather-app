@@ -1,4 +1,4 @@
-    var Today = $("#today")
+    var today = $("#today")
     var forecast = $("#forecast")
     var searchField = $("#search-input")
     var searchButton = $("#search-button")
@@ -10,8 +10,7 @@
     var lon = 0;
     var lat = 0;
     var apiKey = "11c698b900bcca165ef3054ac3254c35";
-    var storedCity = []
-    var city;
+    var storedCity = [];
 
 searchButton.on("click", function(e){
     e.preventDefault()
@@ -77,13 +76,19 @@ function ShowWeatherForecast(city){
             url: apiURL,
             method: "GET"
         }).then(function (result) {
-        
-            console.log(result.list)
-            var todayDiv = $("<div>").addClass("col-md-2 m-2 bg")
-            var todaydate = moment(result[0].dt_txt).format("DD MM YYYY")
-            var name = result.name + todaydate
-
-
+            console.log(result)
+            var todayDiv = $("<div>").addClass("card p-3")
+            var todayDivBody = $("<div>").addClass("card-body")
+            //console.log(result[0].dt_txt)
+            var todaydate = moment(result.list[0].dt_txt).format("DD/MM/YYYY")
+            var name = $("<h3>").addClass("card-title").text(result.city.name + " (" + todaydate + ")")
+            var weathericon = $("<img>").attr("src", "http://openweathermap.org/img/w/" + result.list[0].weather[0].icon + ".png")
+            name.append(weathericon)
+            var temperature = $("<p>").text("Temperature: " + Math.round((result.list[0].main.temp-273)* 10)/ 10 +"°C")
+            var wind = $("<p>").text("Wind: " + result.list[0].wind.speed + " KPH")
+            var humidity = $("<p>").text("Humidity: " + result.list[0].main.humidity + "%")
+            todayDiv.append( todayDivBody, name, temperature, wind, humidity);
+            today.append(todayDiv);
         })
     })
 
