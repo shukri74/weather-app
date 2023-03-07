@@ -156,10 +156,11 @@ function ShowWeatherForecast(city){
 
         })
 
+        Displayhistory();
     
     })
 
-    Displayhistory();
+    
 
 
 }
