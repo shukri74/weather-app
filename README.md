@@ -4,7 +4,7 @@
 
 This is a weather dashboard which uses the OpenWeather API to retrieve weather data. When a user searches for a city, current and future conditions for that city are displayed, and the city is saved in the search history to `localStorage`. If a button is clicked in the history panel the forecast for thatcity is shown on the page.
 
-[screenshot](Capture.PNG)
+[Screenshot](./Capture.PNG)
 
 ## Installation
 
