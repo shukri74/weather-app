@@ -39,18 +39,18 @@ function Displayhistory() {
     historyArea.empty()
 
     var listgroupEL = $("<ul>").addClass("list-group")
-    
-    for(let i = 0; i < 5; i++){
 
     var city = JSON.parse(localStorage.getItem("city")) || [];
+    
+    for(let prevCity of city ){
 
     var historyDiv = $("<li>").addClass("list-group-item m-2")
 
-    var historytext = $("<p>").text(city.slice(-i, -(i - 1)))
+    var historytext = $("<p>").text(prevCity)
 
-    console.log(city.slice(i))
+    console.log(city)
 
-    console.log(city[i])
+    console.log(city)
 
     historyDiv.append(historytext)
 
@@ -78,7 +78,12 @@ function ShowWeatherForecast(city){
 
             storedCity = JSON.parse(localStorage.getItem("city")) || [];
 
-            storedCity.push(result[0].name)
+            storedCity.unshift(result[0].name)
+
+            if(storedCity.length > 5){
+
+                storedCity.splice(-1)
+            }
 
             console.log(storedCity)
 
@@ -88,7 +93,13 @@ function ShowWeatherForecast(city){
         
         else{
 
-            storedCity.push(result[0].name)
+            storedCity.unshift(result[0].name)
+
+            
+            if(storedCity.length > 5){
+                
+                storedCity.splice(-1)
+            }
 
             console.log(storedCity)
 
