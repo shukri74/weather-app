@@ -11,6 +11,7 @@
     var lat = 0;
     var apiKey = "11c698b900bcca165ef3054ac3254c35";
     var storedCity = [];
+    
 
 searchButton.on("click", function(e){
     e.preventDefault()
@@ -26,12 +27,40 @@ historyArea.on("click", function(e){
 
     e.preventDefault()
 
-    city = $(e.target).val()
+    city = $(e.target).text()
+
+    console.log($(e.target).text())
 
     ShowWeatherForecast(city)
-
-    console.log(city)
 })
+
+function Displayhistory() { 
+
+    historyArea.empty()
+
+    var listgroupEL = $("<ul>").addClass("list-group")
+    
+    for(let i = 0; i < 5; i++){
+
+    var city = JSON.parse(localStorage.getItem("city")) || [];
+
+    var historyDiv = $("<li>").addClass("list-group-item m-2")
+
+    var historytext = $("<p>").text(city.slice(-i, -(i - 1)))
+
+    console.log(city.slice(i))
+
+    console.log(city[i])
+
+    historyDiv.append(historytext)
+
+    listgroupEL.append(historyDiv)
+
+    historyArea.append(listgroupEL)
+
+}
+
+}
 
 function ShowWeatherForecast(city){
 
@@ -78,7 +107,8 @@ function ShowWeatherForecast(city){
         }).then(function (result) {
             console.log(result)
             today.empty();
-            var todayDiv = $("<div>").addClass("p-3")
+            forecast.empty();
+            var todayDiv = $("<div>").addClass("card border-dark p-3")
             //console.log(result[0].dt_txt)
             var todaydate = moment(result.list[0].dt_txt).format("DD/MM/YYYY")
             var name = $("<h3>").addClass("card-title").text(result.city.name + " (" + todaydate + ")")
@@ -90,14 +120,15 @@ function ShowWeatherForecast(city){
             todayDiv.append(name, temperature, wind, humidity);
             today.append(todayDiv);
 
-            forecast.empty();
+            var forecastheader = $("<h3>").text(" 5 Day Forecast:").addClass("w-100")
+
+            forecast.append(forecastheader)
 
             for (let i = 0; i < 40; i++){
 
                 i += 6;
-                
-                var forecastDiv = $("<div>").addClass("bg-primary m-2 forecastdiv")
-                var date = moment(result.list[i].dt_txt).format("DD/MM/YYYY")
+                var forecastDiv = $("<div>").addClass("card text-white bg-dark m-2 p-3")
+                var date = $("<h5>").text(moment(result.list[i].dt_txt).format("DD/MM/YYYY"))
                 var weathericon = $("<img>").attr("src", "http://openweathermap.org/img/w/" + result.list[i].weather[0].icon + ".png")
                 var temperature = $("<p>").text("Temperature: " + Math.round((result.list[i].main.temp-273)* 10)/ 10 +"°C")
                 var wind = $("<p>").text("Wind: " + result.list[i].wind.speed + " KPH")
@@ -105,10 +136,19 @@ function ShowWeatherForecast(city){
 
                 forecastDiv.append(date, weathericon, temperature, wind, humidity)
 
+
                 forecast.append(forecastDiv)
             }
 
+
+        
+
         })
+
+    
     })
+
+    Displayhistory();
+
 
 }
