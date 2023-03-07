@@ -10,6 +10,8 @@ This is a weather dashboard which uses the OpenWeather API to retrieve weather d
 
 N/A
 
+https://shukri74.github.io/weather-app/
+
 ## license
 
 MIT license
